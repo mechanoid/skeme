@@ -1,0 +1,13 @@
+someSpec:
+  withArray:
+    - 1
+    - 2
+    - 3
+  withObject:
+    a: 1
+    b: 2
+    c: 3
+  withString: "123"
+  withBoolean: true
+  withNumber: 1
+  withNull: null

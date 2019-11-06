@@ -1,0 +1,47 @@
+{
+  "someSpec": {
+    "withArray": [1, 2, 3],
+    "withObject": {
+      "a": 1,
+      "b": 2,
+      "c": 3
+    },
+    "withString": "123",
+    "withBoolean": true,
+    "withNumber": 1,
+    "withNull": null,
+    "someRelativeRef": {
+      "$ref": "/test/examples/single-file-spec.json"
+    },
+    "someRelativeRefWithQuery": {
+      "$ref": "/test/examples/single-file-spec.json?fubar=fabula"
+    },
+    "someAbsolutePathRef": {
+      "$ref": "./single-file-spec.json"
+    },
+    "someArrayRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withArray"
+    },
+    "someObjectRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withObject"
+    },
+    "someStringRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withString"
+    },
+    "someBooleanRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withBoolean"
+    },
+    "someNumberRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withNumber"
+    },
+    "someNullRefWithHash": {
+      "$ref": "./single-file-spec.json#someSpec/withNull"
+    },
+    "someAbsoluteRef": {
+      "$ref": "http://not-existing-host:3000/test/examples/single-file-spec.json"
+    },
+    "someNestedRef": {
+      "$ref": "http://not-existing-host:3000/test/examples/spec-with-another-ref.json"
+    }
+  }
+}

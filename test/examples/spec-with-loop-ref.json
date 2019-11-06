@@ -1,0 +1,7 @@
+{
+  "someSpec": {
+    "refToFileWithLoop": {
+      "$ref": "http://not-existing-host:3000/test/examples/spec-with-ref-looping-back.json"
+    }
+  }
+}

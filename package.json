@@ -1,0 +1,27 @@
+{
+  "name": "skeme",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "author": "Falk Hoppe <falkhoppe81@gmail.com>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "tap --no-cov test/**/*.js"
+  },
+  "description": "jsonschema loader, resolving all $ref references",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "esm": "^3.2.25",
+    "tap": "^14.8.2"
+  },
+  "dependencies": {
+    "arg": "^4.1.1",
+    "js-yaml": "^3.13.1",
+    "node-fetch": "^2.6.0"
+  }
+}

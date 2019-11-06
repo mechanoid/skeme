@@ -1,0 +1,20 @@
+{
+  "someSpec": {
+    "withArray": [1, 2, 3],
+    "withObject": {
+      "a": 1,
+      "b": 2,
+      "c": 3
+    },
+    "withString": "123",
+    "withBoolean": true,
+    "withNumber": 1,
+    "withNull": null,
+    "someRelativeRefToYmlFile": {
+      "$ref": "./single-file-spec.yml"
+    },
+    "someAbsoluteRefToYmlFile": {
+      "$ref": "http://not-existing-host:3000/test/examples/single-file-spec.yml"
+    }
+  }
+}
