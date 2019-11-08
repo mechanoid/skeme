@@ -90,17 +90,37 @@ export const skeme = async (pathOrUrl, options = { }) => {
     return res.json()
   }
 
-  const urlWithoutHash = url => url.href.split('#')[0]
+  const cacheUrl = url => url.href.split('#')[0]
+
+  /**
+   * if caching is not disabled, search for cached
+   * results and fetch the file from server if not.
+   */
+  const cachedFetch = async (url, { options = {} }) => {
+    const key = cacheUrl(url)
+
+    const [data, hit] = useCache && !!FILE_LOOKUP_CACHE[key]
+      ? [await FILE_LOOKUP_CACHE[key], true]
+      : [await fetchClient(url, options), false]
+
+    return [data, hit]
+  }
+
+  /**
+   * update the cache if caching is enabled
+   */
+  const updateCache = (key, data, hit) => {
+    if (useCache && !hit) {
+      // if not yet cached, write deserialized js-Objects to cache
+      FILE_LOOKUP_CACHE[key] = data
+    }
+  }
 
   // loading schema files via HTTP
   const load = async url => {
     const defaults = { method: 'GET', mode: 'cors', credentials: 'include', redirect: 'follow' }
 
-    const cacheUrl = urlWithoutHash(url)
-
-    const [res, hit] = useCache && !!FILE_LOOKUP_CACHE[cacheUrl]
-      ? [await FILE_LOOKUP_CACHE[cacheUrl], true]
-      : [await fetchClient(url, Object.assign({}, defaults, fetchOptions)), false]
+    const [res, hit] = await cachedFetch(url, Object.assign({}, defaults, fetchOptions))
 
     if (hit) {
       // return deserialized entry from cache on cache HIT
@@ -116,11 +136,7 @@ export const skeme = async (pathOrUrl, options = { }) => {
 
     // deserialize json or yaml responses
     const deserialized = deserialize(res, url)
-
-    if (useCache && !hit) {
-      // if not yet cached, write deserialized js-Objects to cache
-      FILE_LOOKUP_CACHE[cacheUrl] = deserialized
-    }
+    updateCache(cacheUrl(url), deserialized, hit)
 
     return deserialized
   }
