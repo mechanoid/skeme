@@ -57,15 +57,25 @@ export const skeme = async (pathOrUrl, options = { }) => {
   const fetchOptions = options.fetchOptions || {}
   const useCache = !!options.cache || true // cache file lookups by default
 
+  // try to bind mandatory dependencies
   try {
     fetchClient = options.fetch || fetch
-    yamlClient = options.yaml || jsyaml
   } catch (e) {
     if (e instanceof ReferenceError) {
       console.error(`${e.message}. Please provide the dependency via "options" or via global context (e.g in "window")`)
     }
 
     throw e
+  }
+
+  // try to bind optional dependencies
+  try {
+    yamlClient = options.yaml || jsyaml
+  } catch (e) {
+    if (e instanceof ReferenceError) {
+      console.warn(`${e.message}. The dependency has not been provided. Functionality, like e.g. YAML parsing might not be given.
+Please provide the dependency via "options" or via global context (e.g in "window") if you experience missing functionality.`)
+    }
   }
 
   const baseUrl = options.baseUrl || origin()
@@ -82,8 +92,12 @@ export const skeme = async (pathOrUrl, options = { }) => {
     // we check the content-type first, but we also guess for file extension of the path segment.
     // so for files matching either of that criterias we deserialize to yaml.
     if (contentType.indexOf('text/yaml') >= 0 || /^(yml|yaml)$/.test(fileExt)) {
-      const text = await res.text()
-      return yamlClient.load(text)
+      if (yamlClient) {
+        const text = await res.text()
+        return yamlClient.load(text)
+      }
+
+      console.warn('content type indicates YAML content. No YAML parsing library has been provided.')
     }
 
     // for everything else we assume json
