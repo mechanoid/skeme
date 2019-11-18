@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "author": "Falk Hoppe <falkhoppe81@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "scripts": {
     "test": "tap --no-cov test/**/*.js"
   },
