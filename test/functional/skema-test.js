@@ -43,7 +43,7 @@ tap.test('loading and deserializing schema files:', async test => {
     t.end()
   })
 
-  await test.test('relative reference should be resolved to contain the referenced content', async t => {
+  await test.test('absolute reference should be resolved to contain the referenced content', async t => {
     const schemaWithRefCopy = clone(schemaWithRef)
     schemaWithRefCopy.someSpec.someAbsolutePathRef = clone(simpleJsonSchema)
 
@@ -55,6 +55,7 @@ tap.test('loading and deserializing schema files:', async test => {
     const schemaWithRefCopy = clone(schemaWithRef)
     schemaWithRefCopy.someSpec.someArrayRefWithHash = clone(simpleJsonSchema).someSpec.withArray
     schemaWithRefCopy.someSpec.someObjectRefWithHash = clone(simpleJsonSchema).someSpec.withObject
+    schemaWithRefCopy.someSpec.someObjectRefWithHash.someOtherProperty = 'some content'
     schemaWithRefCopy.someSpec.someStringRefWithHash = clone(simpleJsonSchema).someSpec.withString
     schemaWithRefCopy.someSpec.someNumberRefWithHash = clone(simpleJsonSchema).someSpec.withNumber
     schemaWithRefCopy.someSpec.someBooleanRefWithHash = clone(simpleJsonSchema).someSpec.withBoolean

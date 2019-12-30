@@ -23,6 +23,7 @@
       "$ref": "./single-file-spec.json#someSpec/withArray"
     },
     "someObjectRefWithHash": {
+      "someOtherProperty": "some content",
       "$ref": "./single-file-spec.json#someSpec/withObject"
     },
     "someStringRefWithHash": {

@@ -2,6 +2,8 @@
 
 const FILE_LOOKUP_CACHE = {}
 
+const clone = obj => JSON.parse(JSON.stringify(obj))
+
 /**
  * simple object type recognition to recognize js objects from parsed documents
  */
@@ -16,6 +18,8 @@ const objectType = obj => {
     throw new Error(`unknown type of object for "${obj}"`)
   }
 }
+
+const isObject = item => objectType(item) === 'Object'
 
 /**
  * simple browser recognition. If window context is not given, we assume nodejs runtime.
@@ -209,6 +213,16 @@ Please provide the dependency via "options" or via global context (e.g in "windo
     const [fullData, newBaseUrl, newResolveChain] = await loadSchema(url, { baseUrl, resolveChain })
 
     const data = hash ? getNestedPropertyByUrlHash(fullData, hash) : fullData
+
+    if (isObject(data)) {
+      const cleanedSchema = Object.keys(schema).filter(k => k !== '$ref').reduce((result, k) => {
+        result[k] = schema[k]
+        return result
+      }, {})
+
+      const merged = Object.assign({}, cleanedSchema, data)
+      return [merged, newBaseUrl, newResolveChain]
+    }
 
     return [data, newBaseUrl, newResolveChain]
   }
