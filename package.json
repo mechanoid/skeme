@@ -6,7 +6,7 @@
   "author": "Falk Hoppe <falkhoppe81@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node test/functional/skema-test.js"
+    "test": "node test/functional/skeme-test.js"
   },
   "description": "jsonschema loader, resolving all $ref references",
   "devDependencies": {
