@@ -2,8 +2,6 @@
 
 const FILE_LOOKUP_CACHE = {}
 
-const clone = obj => JSON.parse(JSON.stringify(obj))
-
 /**
  * simple object type recognition to recognize js objects from parsed documents
  */
