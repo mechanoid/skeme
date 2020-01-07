@@ -1,14 +1,18 @@
-import tap from 'tap'
+import tape from 'tape'
+import _test from 'tape-promise'
 import yaml from 'js-yaml'
 import { skeme } from '../../index.js'
 import { fetchDummy } from './helper/fetch.js'
+
+console.log(_test)
+const test = _test.default(tape)
 
 const clone = obj => JSON.parse(JSON.stringify(obj))
 
 const baseUrl = 'http://some-test-host.fubar'
 const fetch = fetchDummy(baseUrl)
 
-tap.test('loading and deserializing schema files:', async test => {
+test('loading and deserializing schema files:', async test => {
   test.strictEqual(typeof skeme, 'function', 'skeme function is defined')
   let simpleJsonSchema, simpleYamlSchema, schemaWithRef
 
@@ -84,7 +88,7 @@ tap.test('loading and deserializing schema files:', async test => {
   })
 })
 
-tap.test('loading a looped reference should fail', async test => {
+test('loading a looped reference should fail', async test => {
   test.rejects(async () => {
     await skeme('http://not-existing-host:3000/test/examples/spec-with-loop-ref.json', { baseUrl, fetch, yaml })
   }, /reference cycle/, 'reference loops should fail')

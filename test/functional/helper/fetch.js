@@ -1,6 +1,7 @@
-import { Response } from 'node-fetch'
+import fetch from 'node-fetch'
 import path from 'path'
 import fs from 'fs'
+const Response = fetch.Response
 
 // our fetch implementation for looking up our fixture files
 // from file system instead of establishing real http connections.

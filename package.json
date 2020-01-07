@@ -6,7 +6,7 @@
   "author": "Falk Hoppe <falkhoppe81@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "tap --no-cov test/**/*.js"
+    "test": "node test/functional/skema-test.js"
   },
   "description": "jsonschema loader, resolving all $ref references",
   "devDependencies": {
@@ -17,7 +17,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "esm": "^3.2.25",
-    "tap": "^14.10.5"
+    "tape": "^4.12.1",
+    "tape-promise": "^4.0.0"
   },
   "dependencies": {
     "arg": "^4.1.2",
