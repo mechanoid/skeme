@@ -4,7 +4,6 @@ import yaml from 'js-yaml'
 import { skeme } from '../../index.js'
 import { fetchDummy } from './helper/fetch.js'
 
-console.log(_test)
 const test = _test.default(tape)
 
 const clone = obj => JSON.parse(JSON.stringify(obj))
@@ -92,6 +91,29 @@ test('loading a looped reference should fail', async test => {
   test.rejects(async () => {
     await skeme('http://not-existing-host:3000/test/examples/spec-with-loop-ref.json', { baseUrl, fetch, yaml })
   }, /reference cycle/, 'reference loops should fail')
+
+  test.end()
+})
+
+test('loading with keeping refs, should preserve $ref properties in resolved objects', async test => {
+  let schema
+  try {
+    schema = await skeme('http://not-existing-host:3000/test/examples/spec-with-ref.json', { baseUrl, fetch, yaml, keepRefs: true })
+  } catch (e) {
+    console.log(e)
+  }
+
+  await test.test('for a simple json schema file', async t => {
+    await test.deepEqual(schema.someSpec.someObjectRefWithHash, {
+      someOtherProperty: 'some content',
+      a: 1,
+      b: 2,
+      c: 3,
+      $ref: './single-file-spec.json#someSpec/withObject'
+    },
+    'json content should preserve $refs in objects')
+    t.end()
+  })
 
   test.end()
 })

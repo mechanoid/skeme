@@ -58,6 +58,7 @@ export const skeme = async (pathOrUrl, options = { }) => {
   let fetchClient, yamlClient
   const fetchOptions = options.fetchOptions || {}
   const useCache = !!options.cache || true // cache file lookups by default
+  const keepRefs = !!options.keepRefs || false
 
   // try to bind mandatory dependencies
   try {
@@ -218,7 +219,10 @@ Please provide the dependency via "options" or via global context (e.g in "windo
         return result
       }, {})
 
-      const merged = Object.assign({}, cleanedSchema, data)
+      const merged = keepRefs
+        ? Object.assign({}, cleanedSchema, data, { $ref: schema.$ref })
+        : Object.assign({}, cleanedSchema, data)
+
       return [merged, newBaseUrl, newResolveChain]
     }
 
