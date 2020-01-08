@@ -171,11 +171,18 @@ Please provide the dependency via "options" or via global context (e.g in "windo
    */
   const getNestedPropertyByUrlHash = (item, hash) => {
     try {
-      return urlHashToPropertyList(hash).reduce((nested, prop, index) => nested[prop], item)
+      return urlHashToPropertyList(hash).reduce((nested, prop, index) => {
+        if (Object.prototype.hasOwnProperty.call(nested, prop)) {
+          return nested[prop]
+        }
+        throw new Error(`Property ${prop} is not contained in ${JSON.stringify(nested)}`)
+      }, item)
     } catch (e) {
       throw new Error(`The object
   ${JSON.stringify(item)}
-  cannot be resolved with the hash: ${hash}
+  cannot be resolved with the hash:
+  ${e.message}
+  ${hash}
   `)
     }
   }

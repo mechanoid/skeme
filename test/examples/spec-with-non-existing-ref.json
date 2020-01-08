@@ -1,0 +1,8 @@
+{
+  "someSpec": {
+    "someObjectRefWithHash": {
+      "someOtherProperty": "some content",
+      "$ref": "./single-file-spec.json#someSpec/withFubarRef"
+    }
+  }
+}

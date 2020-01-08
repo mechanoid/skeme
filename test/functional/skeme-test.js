@@ -95,6 +95,14 @@ test('loading a looped reference should fail', async test => {
   test.end()
 })
 
+test('resolving a non existing reference should fail', async test => {
+  test.rejects(async () => {
+    await skeme('http://not-existing-host:3000/test/examples/spec-with-non-existing-ref.json', { baseUrl, fetch, yaml })
+  }, /cannot be resolved with the hash/, 'resolving non-existing references should make the library fail')
+
+  test.end()
+})
+
 test('loading with keeping refs, should preserve $ref properties in resolved objects', async test => {
   let schema
   try {
