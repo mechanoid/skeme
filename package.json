@@ -5,6 +5,10 @@
   "type": "module",
   "author": "Falk Hoppe <falkhoppe81@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mechanoid/skeme"
+  },
   "scripts": {
     "test": "node test/functional/skeme-test.js"
   },
