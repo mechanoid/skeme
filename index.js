@@ -227,7 +227,7 @@ Please provide the dependency via "options" or via global context (e.g in "windo
       }, {})
 
       const merged = keepRefs
-        ? Object.assign({}, cleanedSchema, data, { $ref: schema.$ref })
+        ? Object.assign({}, cleanedSchema, data, { $deref: schema.$ref })
         : Object.assign({}, cleanedSchema, data)
 
       return [merged, newBaseUrl, newResolveChain]
@@ -240,6 +240,12 @@ Please provide the dependency via "options" or via global context (e.g in "windo
    * resolves HashMaps / Objects provided as values in json schemas.
    */
   const resolveObject = async (schema, { baseUrl, resolveChain }) => {
+    if (schema.$ref) {
+      const [data, newBaseUrl, newResolveChain] = await resolveRef(schema, { baseUrl, resolveChain })
+
+      return resolveSchema(data, { baseUrl: newBaseUrl, resolveChain: newResolveChain })
+    }
+
     const properties = Object.keys(schema)
 
     return properties.reduce(async (resultFuture, prop) => {

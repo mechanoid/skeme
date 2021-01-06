@@ -117,7 +117,7 @@ test('loading with keeping refs, should preserve $ref properties in resolved obj
       a: 1,
       b: 2,
       c: 3,
-      $ref: './single-file-spec.json#someSpec/withObject'
+      $deref: './single-file-spec.json#someSpec/withObject'
     },
     'json content should preserve $refs in objects')
     t.end()
