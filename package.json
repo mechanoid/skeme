@@ -1,6 +1,6 @@
 {
   "name": "skeme",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "index.js",
   "type": "module",
   "author": "Falk Hoppe <falkhoppe81@gmail.com>",
