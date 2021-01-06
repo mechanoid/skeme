@@ -2,6 +2,16 @@
 
 const FILE_LOOKUP_CACHE = {}
 
+const YAML_TYPES = [
+  'text/x-yaml',
+  'text/yaml',
+  'text/yml',
+  'application/x-yaml',
+  'application/x-yml',
+  'application/yaml',
+  'application/yml'
+]
+
 /**
  * simple object type recognition to recognize js objects from parsed documents
  */
@@ -77,7 +87,7 @@ export const skeme = async (pathOrUrl, options = { }) => {
   } catch (e) {
     if (e instanceof ReferenceError) {
       console.warn(`${e.message}. The dependency has not been provided. Functionality, like e.g. YAML parsing might not be given.
-Please provide the dependency via "options" or via global context (e.g in "window") if you experience missing functionality.`)
+  Please provide the dependency via "options" or via global context (e.g in "window") if you experience missing functionality.`)
     }
   }
 
@@ -94,7 +104,8 @@ Please provide the dependency via "options" or via global context (e.g in "windo
 
     // we check the content-type first, but we also guess for file extension of the path segment.
     // so for files matching either of that criterias we deserialize to yaml.
-    if (contentType.indexOf('text/yaml') >= 0 || /^(yml|yaml)$/.test(fileExt)) {
+
+    if ((contentType && !!YAML_TYPES.find(t => contentType.includes(t))) || /^(yml|yaml)$/.test(fileExt)) {
       if (yamlClient) {
         const text = await res.text()
         return yamlClient.load(text)
@@ -113,14 +124,17 @@ Please provide the dependency via "options" or via global context (e.g in "windo
    * if caching is not disabled, search for cached
    * results and fetch the file from server if not.
    */
-  const cachedFetch = async (url, { options = {} }) => {
+  const cachedFetch = async (url, options = {}) => {
     const key = cacheUrl(url)
 
-    const [data, hit] = useCache && !!FILE_LOOKUP_CACHE[key]
-      ? [await FILE_LOOKUP_CACHE[key], true]
-      : [await fetchClient(url, options), false]
+    if (useCache && !!FILE_LOOKUP_CACHE[key]) {
+      const data = await FILE_LOOKUP_CACHE[key]
+      return [data, true]
+    }
 
-    return [data, hit]
+    const data = await fetchClient(url, options)
+
+    return [data, false]
   }
 
   /**
